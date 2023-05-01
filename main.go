@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"hhn_forest_monitoring/metrics"
 	"math/rand"
 	"net/http"
 	"time"
@@ -14,21 +12,23 @@ func main() {
 	go randomMetrics()
 
 	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func randomMetrics() {
+	client := metrics.Client{}
 	for {
-		if rand.Int()%2 == 0 {
-			fmt.Println("Increase")
-			randomCounter.Inc()
+		randInt := rand.Int()
+		if randInt%2 == 0 {
+			client.IncreaseHttpCall(200)
+		} else if randInt%3 == 0 {
+			client.IncreaseHttpCall(404)
 		} else {
-			fmt.Println("No Increase")
+			client.IncreaseHttpCall(401)
 		}
 		time.Sleep(2 * time.Second)
 	}
 }
-
-var randomCounter = promauto.NewCounter(prometheus.CounterOpts{
-	Name: "random_counter",
-})
