@@ -21,14 +21,15 @@ func main() {
 func randomMetrics() {
 	client := metrics.Client{}
 	for {
-		randInt := rand.Int()
+		randInt := rand.Intn(10)
+		randTime := randInt * rand.Int()
 		if randInt%2 == 0 {
-			client.IncreaseHttpCall("/test/my/path", http.StatusOK)
+			client.RecordHttpCall("/test/my/path", http.StatusOK, int64(randTime))
 		} else if randInt%3 == 0 {
-			client.IncreaseHttpCall("/test/my/path", http.StatusNotFound)
+			client.RecordHttpCall("/test/my/path", http.StatusNotFound, int64(randTime))
 		} else {
-			client.IncreaseHttpCall("/test/my/path", http.StatusUnauthorized)
+			client.RecordHttpCall("/test/my/path", http.StatusUnauthorized, int64(randTime))
 		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
