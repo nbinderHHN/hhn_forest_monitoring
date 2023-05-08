@@ -23,11 +23,11 @@ func randomMetrics() {
 	for {
 		randInt := rand.Int()
 		if randInt%2 == 0 {
-			client.IncreaseHttpCall(200, "/test/my/path")
+			client.IncreaseHttpCall("/test/my/path", http.StatusOK)
 		} else if randInt%3 == 0 {
-			client.IncreaseHttpCall(404, "/test/my/path")
+			client.IncreaseHttpCall("/test/my/path", http.StatusNotFound)
 		} else {
-			client.IncreaseHttpCall(401, "/test/my/path")
+			client.IncreaseHttpCall("/test/my/path", http.StatusUnauthorized)
 		}
 		time.Sleep(2 * time.Second)
 	}
