@@ -6,7 +6,8 @@ import (
 	"strconv"
 )
 
-func (client Client) IncreaseHttpCall(statusCode int, endpoint string) {
+// IncreaseHttpCall Increases the amount of http calls to a given endpoint with the statusCode
+func (client Client) IncreaseHttpCall(endpoint string, statusCode int) {
 	httpCalls.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode), endpointLabel: endpoint}).Inc()
 }
 
