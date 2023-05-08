@@ -6,13 +6,14 @@ import (
 	"strconv"
 )
 
-func (client Client) IncreaseHttpCall(statusCode int) {
-	httpCalls.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode)}).Inc()
+func (client Client) IncreaseHttpCall(statusCode int, endpoint string) {
+	httpCalls.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode), endpointLabel: endpoint}).Inc()
 }
 
 var httpCalls = promauto.NewCounterVec(
 	prometheus.CounterOpts{Name: "http_calls"},
-	[]string{statusCodeLabel},
+	[]string{statusCodeLabel, endpointLabel},
 )
 
-var statusCodeLabel = "status_code"
+const statusCodeLabel = "status_code"
+const endpointLabel = "endpoint"
