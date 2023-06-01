@@ -1,4 +1,4 @@
-package metrics
+package client
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
@@ -7,9 +7,12 @@ import (
 
 // RecordHealthStatusEntry
 // Records the health status of a client.
-// uses the same senderLabel as signal_strength.go
-func RecordHealthStatusEntry(clientName string, healthStatus float64) {
-	signal.With(prometheus.Labels{clientNameLabel: clientName}).Set(healthStatus)
+func RecordHealthStatusEntry(clientName string, healthStatus bool) {
+	if healthStatus {
+		status.With(prometheus.Labels{clientNameLabel: clientName}).Set(1)
+	} else {
+		status.With(prometheus.Labels{clientNameLabel: clientName}).Set(0)
+	}
 }
 
 var status = promauto.NewGaugeVec(
