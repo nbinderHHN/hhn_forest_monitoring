@@ -9,7 +9,7 @@ import (
 // Records the health status of a client.
 // uses the same senderLabel as signal_strength.go
 func RecordHealthStatusEntry(clientName string, healthStatus float64) {
-	signal.With(prometheus.Labels{clientNameLabel: clientName}).Set(healthStatus)
+	status.With(prometheus.Labels{clientNameLabel: clientName}).Set(healthStatus)
 }
 
 var status = promauto.NewGaugeVec(
