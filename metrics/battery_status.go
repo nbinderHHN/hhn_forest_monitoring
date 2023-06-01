@@ -15,5 +15,3 @@ var batteryStatus = promauto.NewGaugeVec(
 	prometheus.GaugeOpts{Name: "battery_status", Help: "Battery status of a client"},
 	[]string{clientNameLabel},
 )
-
-const clientNameLabel = "client"
