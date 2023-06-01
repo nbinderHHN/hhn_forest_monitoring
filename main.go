@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"hhn_forest_monitoring/metrics"
+	"hhn_forest_monitoring/metrics/backend"
+	"hhn_forest_monitoring/metrics/client"
 	"math/rand"
 	"net/http"
 	"time"
@@ -13,22 +12,27 @@ import (
 func main() {
 	go randomMetrics()
 
-	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":8080", nil)
+	http.Handle("/metrics", metrics.GetPrometheusHandler())
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func randomMetrics() {
 	for {
-		if rand.Int()%2 == 0 {
-			fmt.Println("Increase")
-			randomCounter.Inc()
+		randInt := rand.Intn(10)
+		randTime := randInt * rand.Int()
+		if randInt%2 == 0 {
+			backend.RecordHttpCall("/test/my/path", http.StatusOK, int64(randTime))
+			client.RecordSignalStrengthEntry("Client 2", "Client 1", float64(randTime))
+		} else if randInt%3 == 0 {
+			backend.RecordHttpCall("/test/my/path", http.StatusNotFound, int64(randTime))
+			client.RecordSignalStrengthEntry("Client 2", "Client 5", float64(randTime))
 		} else {
-			fmt.Println("No Increase")
+			backend.RecordHttpCall("/test/my/path", http.StatusUnauthorized, int64(randTime))
+			client.RecordSignalStrengthEntry("Client 2", "Client 1", float64(randTime))
 		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
-
-var randomCounter = promauto.NewCounter(prometheus.CounterOpts{
-	Name: "random_counter",
-})
