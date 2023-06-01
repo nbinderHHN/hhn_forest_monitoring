@@ -1,4 +1,4 @@
-package metrics
+package client
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
@@ -8,7 +8,7 @@ import (
 // RecordBatteryStatusEntry
 // Records the battery level of a specific client
 func RecordBatteryStatusEntry(clientName string, batteryLevel float64) {
-	batteryStatus.With(prometheus.Labels{clientNameLabel: clientName}).Set(batteryLevel)
+	batteryStatus.With(prometheus.Labels{metrics.clientNameLabel: clientName}).Set(batteryLevel)
 }
 
 var batteryStatus = promauto.NewGaugeVec(
