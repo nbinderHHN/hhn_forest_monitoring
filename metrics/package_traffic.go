@@ -6,8 +6,8 @@ import (
 )
 
 // Record the number of bytes sent and received by a client.
-func RecordBytesSentEntry(senderClientName string, bytesSent float64) {
-	bytesSentCounter.With(prometheus.Labels{senderLabel: senderClientName}).Add(bytesSent)
+func RecordBytesSentEntry(clientName string, bytesSent float64) {
+	bytesSentCounter.With(prometheus.Labels{clientName: clientName}).Add(bytesSent)
 }
 
 func RecordBytesReceivedEntry(receiverClientName string, bytesReceived float64) {
@@ -18,7 +18,7 @@ func RecordBytesReceivedEntry(receiverClientName string, bytesReceived float64) 
 
 var bytesSentCounter = promauto.NewCounterVec(
 	prometheus.CounterOpts{Name: "bytes_sent", Help: "Number of bytes sent by a client"},
-	[]string{senderLabel})
+	[]string{clientName})
 
 var bytesReceivedCounter = promauto.NewCounterVec(
 	prometheus.CounterOpts{Name: "bytes_received", Help: "Number of bytes received by a client"},

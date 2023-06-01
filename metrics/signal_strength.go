@@ -14,6 +14,3 @@ func RecordSignalStrengthEntry(senderClientName, receiverClientName string, sign
 var signal = promauto.NewGaugeVec(
 	prometheus.GaugeOpts{Name: "signal_strength", Help: "Strength of the signal from receiver to sender"},
 	[]string{senderLabel, receiverLabel})
-
-const receiverLabel = "receiver"
-const senderLabel = "sender"
