@@ -2,4 +2,5 @@ package metrics
 
 const receiverLabel = "receiver"
 const senderLabel = "sender"
-const clientName = "client"
+const clientNameLabel = "client"
+const directionLabel = "direction"

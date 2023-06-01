@@ -7,19 +7,13 @@ import (
 
 // Record the number of bytes sent and received by a client.
 func RecordBytesSentEntry(clientName string, bytesSent float64) {
-	bytesSentCounter.With(prometheus.Labels{clientName: clientName}).Add(bytesSent)
+	packageTraffic.With(prometheus.Labels{clientNameLabel: clientName, directionLabel: "sent"}).Add(bytesSent)
 }
 
-func RecordBytesReceivedEntry(receiverClientName string, bytesReceived float64) {
-	bytesReceivedCounter.With(prometheus.Labels{receiverLabel: receiverClientName}).Add(bytesReceived)
+func RecordBytesReceivedEntry(clientName string, bytesReceived float64) {
+	packageTraffic.With(prometheus.Labels{clientNameLabel: clientName, directionLabel: "received"}).Add(bytesReceived)
 }
 
-// Maybe we should fusionate the two counters into one, with a label "direction" that can be "sent" or "received"?
-
-var bytesSentCounter = promauto.NewCounterVec(
-	prometheus.CounterOpts{Name: "bytes_sent", Help: "Number of bytes sent by a client"},
-	[]string{clientName})
-
-var bytesReceivedCounter = promauto.NewCounterVec(
-	prometheus.CounterOpts{Name: "bytes_received", Help: "Number of bytes received by a client"},
-	[]string{receiverLabel})
+var packageTraffic = promauto.NewCounterVec(
+	prometheus.CounterOpts{Name: "package_traffic", Help: "Number of bytes received and sent by a client"},
+	[]string{clientNameLabel, directionLabel})
