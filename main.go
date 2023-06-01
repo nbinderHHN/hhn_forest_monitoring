@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"hhn_forest_monitoring/metrics"
 	"math/rand"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 func main() {
 	go randomMetrics()
 
-	http.Handle("/metrics", promhttp.Handler())
+	http.Handle("/metrics", metrics.GetPrometheusHandler())
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		panic(err)
