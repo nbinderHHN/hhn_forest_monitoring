@@ -1,9 +1,9 @@
 package main
 
 import (
-	"hhn_forest_monitoring/metrics"
-	"hhn_forest_monitoring/metrics/backend"
-	"hhn_forest_monitoring/metrics/client"
+	"github.com/nbinderHHN/hhn_forest_monitoring/metrics"
+	"github.com/nbinderHHN/hhn_forest_monitoring/metrics/backend"
+	"github.com/nbinderHHN/hhn_forest_monitoring/metrics/client"
 	"math/rand"
 	"net/http"
 	"time"
