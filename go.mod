@@ -1,4 +1,4 @@
-module hhn_forest_monitoring
+module github.com/nbinderHHN/hhn_forest_monitoring
 
 go 1.20
 
