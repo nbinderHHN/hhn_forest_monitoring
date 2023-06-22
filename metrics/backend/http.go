@@ -10,8 +10,8 @@ import (
 // RecordHttpCall
 // Records the internal response time for a given endpoint with the given statusCode.
 // Increases the amount of http calls to a given endpoint with the given statusCode.
-func RecordHttpCall(endpoint string, statusCode int, responseTime int64) {
-	httpResponseTime.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode), endpointLabel: endpoint}).Set(float64(responseTime))
+func RecordHttpCall(endpoint string, statusCode int, responseTime float64) {
+	httpResponseTime.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode), endpointLabel: endpoint}).Set(responseTime)
 	httpCalls.With(prometheus.Labels{statusCodeLabel: strconv.Itoa(statusCode), endpointLabel: endpoint}).Inc()
 }
 
